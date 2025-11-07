@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Jumpscare</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0; height: 100%; width: 100%;
+      background: black;
+      overflow: hidden;
+    }
+    #face {
+      display: none;
+      position: fixed;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      object-fit: cover;
+      z-index: 9;
+    }
+    #trigger {
+      position: absolute;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: transparent;
+      z-index: 10;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="trigger"></div>
+  <img id="face" src="scaryface.jpg" alt="Jumpscare">
+  <audio id="sound" src="scream.mp3"></audio>
+
+  <script>
+    function goJumpscare() {
+      // Переход в fullscreen по действию пользователя
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+      }
+      document.getElementById('face').style.display = 'block';
+      var sound = document.getElementById('sound');
+      sound.currentTime = 0;
+      sound.volume = 1.0;
+      sound.play();
+      setTimeout(function() {
+        document.getElementById('face').style.display = 'none';
+        // Выход из fullscreen, если нужно
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+      }, 4000);
+      document.getElementById('trigger').style.display = 'none';
+    }
+    document.getElementById('trigger').onclick = goJumpscare;
+  </script>
+</body>
+</html>
